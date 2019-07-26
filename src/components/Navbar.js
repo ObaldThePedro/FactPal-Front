@@ -18,7 +18,7 @@ const Navbar = ({ user, signUp, logIn, logOut }) => {
                     <input type="text" placeholder="Search..."/>
                     <i class="search link icon"></i>
                 </div>
-                </div>
+            </div>
                 {!user ? <a class="ui item"> Logout </a> : true}
             </div>
         </div>

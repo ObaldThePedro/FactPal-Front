@@ -45,14 +45,15 @@ class App extends React.Component {
     return (
       <div className="App">
         <Navbar/>
-        {/* <img 
-        src={require('./images/fact.jpg')}
-        style={{width: 600, height: 600, position: 'relative', top: this.props.top, left: this.props.left}}
-        />
-        <LoginPage user={this.state.user} signUp={this.signUp} logIn={this.logIn} logOut={this.logOut} />
-        { this.state.user ? true : "Not logged in, testtext for now"} */}
-        <FactContainer/>
-        
+        { this.state.user ? <FactContainer/> : 
+        <div>
+          <img 
+          src={require('./images/fact.jpg')}
+          style={{width: 600, height: 600, position: 'relative', top: this.props.top, left: this.props.left}}
+          />
+          <LoginPage user={this.state.user} signUp={this.signUp} logIn={this.logIn} logOut={this.logOut} />
+        </div>
+        }
       </div>
     );
   }
