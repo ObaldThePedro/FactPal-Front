@@ -27,11 +27,13 @@ class App extends React.Component {
   }
 
   signUp = user => {
+    debugger
     API.signUp(user)
       .then(user => this.setState({ user }))
   }
 
   logIn = user => {
+    debugger
     API.logIn(user)
       .then(user => this.setState({ user }))
   }
