@@ -1,8 +1,10 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import LoginPage from './components/LoginPage';
 import Navbar from './components/Navbar';
 import API from './adapters/API';
+import FactContainer from './containers/FactContainer';
 
 class App extends React.Component {
 
@@ -42,7 +44,15 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <Navbar user={this.state.user} signUp={this.signUp} logIn={this.logIn} logOut={this.logOut} />
+        <Navbar/>
+        {/* <img 
+        src={require('./images/fact.jpg')}
+        style={{width: 600, height: 600, position: 'relative', top: this.props.top, left: this.props.left}}
+        />
+        <LoginPage user={this.state.user} signUp={this.signUp} logIn={this.logIn} logOut={this.logOut} />
+        { this.state.user ? true : "Not logged in, testtext for now"} */}
+        <FactContainer/>
+        
       </div>
     );
   }
