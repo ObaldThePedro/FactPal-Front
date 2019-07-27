@@ -2,7 +2,7 @@ const endpoint = 'http://localhost:3000/api'
 const signupUrl = `${endpoint}/users`
 const loginUrl = `${endpoint}/login`
 const factsUrl = `${endpoint}/facts`
-const validateUrl = `${endpoint}/validate`
+const validateUrl = `${endpoint}/profile`
 
 const jsonify = res => {
     if (res.ok)
@@ -22,21 +22,23 @@ const constructHeaders = (moreHeaders = {}) => (
 const signUp = (user) => fetch(signupUrl, {
     method: 'POST',
     headers: {
-        'Content-Type': 'application/json'
+        'Content-Type':'application/json',
+        'Accept':'application/json'
     },
     body: JSON.stringify({ user })
 }).then(jsonify)
-    .then(data => {
-        localStorage.setItem('token', data.token)
-        return data.user
-    })
-    .catch(handleServerError)
+    // .then(data => {
+    //     localStorage.setItem('token', data.token)
+    //     return data.user
+    // })
+    // .catch(handleServerError)
 
 
 const logIn = (user) => fetch(loginUrl, {
     method: 'POST',
     headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Accept':'application/json'
     },
     body: JSON.stringify({ user })
 }).then(jsonify)
