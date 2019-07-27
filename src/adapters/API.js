@@ -8,7 +8,8 @@ const jsonify = res => {
     if (res.ok)
         return res.json()
     else
-        throw new Error(res.json())
+        // throw new Error(res.json())
+        console.log("hi")
 }
 const handleServerError = response => console.error(response)
 

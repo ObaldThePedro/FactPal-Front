@@ -9,21 +9,16 @@ import FactContainer from './containers/FactContainer';
 class App extends React.Component {
 
   state = {
-    user: undefined
+    user: undefined,
+    newFacts: [],
+    savedFacts: [{
+      username: "Felix",
+      text: "This is a fact"
+    }]
   }
 
   componentDidMount() {
-    API.validateUser()
-      .then(data => {
-        if (data.error) {
-          console.error(data.error)
-          // display some error
-          // this.props.history.push('/login')
-        } else {
-          this.setState({ user: data })
-          // this.props.history.push('/dashboard')
-        }
-      })
+    this.setState({ user: "Felix" })
   }
 
   signUp = user => {
@@ -37,22 +32,35 @@ class App extends React.Component {
   }
 
   logOut = () => {
-    API.clearToken()
+    // API.clearToken()
     this.setState({ user: undefined })
+  }
+
+  fetchFact = () => {
+    debugger
+    fetch("http://numbersapi.com/random/trivia?json").then(resp => resp.json()).then(newFact => this.setState({newFacts: [newFact]}))
+  }
+
+  saveFact = (fact) => {
+    fact.username = "Felix"
+    this.setState({savedFacts: [fact, ...this.state.savedFacts]})
+    this.setState({newFacts: []})
   }
 
   render() {
     return (
       <div className="App">
-        <Navbar/>
-        {/* <img 
-        src={require('./images/fact.jpg')}
-        style={{width: 600, height: 600, position: 'relative', top: this.props.top, left: this.props.left}}
-        />
-        <LoginPage user={this.state.user} signUp={this.signUp} logIn={this.logIn} logOut={this.logOut} />
-        { this.state.user ? true : "Not logged in, testtext for now"} */}
-        <FactContainer/>
-        
+        <Navbar user={this.state.user} logOut={this.logOut} fetchFact={this.fetchFact}/>
+        { this.state.user ? 
+        <FactContainer newFacts={this.state.newFacts} savedFacts={this.state.savedFacts} newFact={this.fetchFact} saveFact={this.saveFact} /> : 
+        <div>
+          <img 
+          src={require('./images/fact.jpg')}
+          style={{width: 600, height: 600, position: 'relative', top: this.props.top, left: this.props.left}}
+          />
+          <LoginPage user={this.state.user} signUp={this.signUp} logIn={this.logIn} />
+        </div>
+        }
       </div>
     );
   }

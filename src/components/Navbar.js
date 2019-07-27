@@ -1,25 +1,22 @@
 import React from 'react'
 
-const Navbar = ({ user, signUp, logIn, logOut }) => {
+const Navbar = ({ user, signUp, logIn, logOut, fetchFact }) => {
     return (
-        <div class="ui secondary  menu">
-            <a class="item">
+        <div className="ui secondary  menu">
+            {/* <a className="item">
                 Home
-            </a>
-            <a class="item">
-                Messages
-            </a>
-            <a class="item active">
-                Friends
-            </a>
-            <div class="right menu">
-                <div class="item">
-                <div class="ui icon input">
+            </a> */}
+
+
+            {user ? <a className="item active" onClick={fetchFact}> Get to know an interesting new Fact! </a> : true}
+            <div className="right menu">
+                <div className="item">
+                {/* <div className="ui icon input">
                     <input type="text" placeholder="Search..."/>
-                    <i class="search link icon"></i>
-                </div>
-                </div>
-                {!user ? <a class="ui item"> Logout </a> : true}
+                    <i className="search link icon"></i>
+                </div> */}
+            </div>
+                {user ? <a className="ui item" onClick={logOut}> Logout </a> : true}
             </div>
         </div>
         
