@@ -18,7 +18,17 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({ user: "Felix" })
+    API.validateUser()
+      .then(data => {
+        if (data.error) {
+          console.error(data.error)
+          // display some error
+          // this.props.history.push('/login')
+        } else {
+          this.setState({ user: data })
+          // this.props.history.push('/dashboard')
+        }
+      })
   }
 
   signUp = user => {
@@ -32,12 +42,11 @@ class App extends React.Component {
   }
 
   logOut = () => {
-    // API.clearToken()
+    API.clearToken()
     this.setState({ user: undefined })
   }
 
   fetchFact = () => {
-    debugger
     fetch("http://numbersapi.com/random/trivia?json").then(resp => resp.json()).then(newFact => this.setState({newFacts: [newFact]}))
   }
 

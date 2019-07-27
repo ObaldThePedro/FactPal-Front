@@ -8,8 +8,7 @@ const jsonify = res => {
     if (res.ok)
         return res.json()
     else
-        // throw new Error(res.json())
-        console.log("hi")
+        throw new Error(res.json())
 }
 const handleServerError = response => console.error(response)
 
@@ -23,23 +22,21 @@ const constructHeaders = (moreHeaders = {}) => (
 const signUp = (user) => fetch(signupUrl, {
     method: 'POST',
     headers: {
-        'Content-Type':'application/json',
-        'Accept':'application/json'
+        'Content-Type': 'application/json'
     },
     body: JSON.stringify({ user })
 }).then(jsonify)
-    // .then(data => {
-    //     localStorage.setItem('token', data.token)
-    //     return data.user
-    // })
-    // .catch(handleServerError)
+    .then(data => {
+        localStorage.setItem('token', data.token)
+        return data.user
+    })
+    .catch(handleServerError)
 
 
 const logIn = (user) => fetch(loginUrl, {
     method: 'POST',
     headers: {
-        'Content-Type': 'application/json',
-        'Accept':'application/json'
+        'Content-Type': 'application/json'
     },
     body: JSON.stringify({ user })
 }).then(jsonify)
