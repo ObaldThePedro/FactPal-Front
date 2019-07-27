@@ -4,11 +4,17 @@ const Fact = (props) => {
 
     return (
         <>
-        <div class="ui raised very padded text container segment">
-            <h3 class="ui header" text-align="left" >This will be a fact</h3>
-            <p></p>
-            <p></p>
+        <div className="ui raised very padded text container segment">
+            <h3>{props.fact.username}</h3>
+            <p>{props.fact.text}</p>
+            {props.newFact ? 
+            <div> 
+                <button className="ui primary positive button" onClick={() => props.saveFact(props.fact)}> Everyone should know this! </button>
+                <button className="ui primary negative button" onClick={props.newFact}> Get me a different one :( </button>
+            </div>
+                 : "This is old"}
         </div>
+        
         </>
     )
 }

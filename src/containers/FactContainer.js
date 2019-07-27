@@ -1,16 +1,13 @@
 import React from 'react'
-// import Fact from '../components/Fact';
+import Fact from '../components/Fact';
 
 class FactContainer extends React.Component {
     
     render(){
         return(
             <>
-                <div class="ui raised very padded text container segment">
-                    <h3 class="ui header" text-align="left" >This will be a fact</h3>
-                    <p></p>
-                    <p></p>
-                </div>
+                {this.props.newFacts.map(fact => <Fact key={fact} newFact={true} fact={fact} newFact={this.props.newFact} saveFact={this.props.saveFact}/>)}
+                {this.props.savedFacts.map(fact => <Fact key={fact} newFact={false} fact={fact}/>)}
             </>
         )
     }
