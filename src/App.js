@@ -20,15 +20,15 @@ class App extends React.Component {
   componentDidMount() {
     API.validateUser()
       .then(data => {
-        if (data.error) {
-          console.error(data.error)
+        if (!data.user) {
+          console.error(data.message)
           // display some error
           // this.props.history.push('/login')
         } else {
           this.setState({ user: data })
           // this.props.history.push('/dashboard')
-        }
-      })
+        }}
+      )
   }
 
   signUp = user => {
