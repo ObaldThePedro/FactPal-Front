@@ -59,18 +59,35 @@ class App extends React.Component {
     })
   }
   
-  likeFact = (fact) => {
-    API.postLike(fact, this.state.user.id).then(like =>
-      this.setState({
-      savedFacts: 
-        this.state.savedFacts.map(mappedFact => {
-          if(fact.id === mappedFact.id) {
-            fact.get_likes = like.like.newlikes
-            return fact
-          }
-          return mappedFact
-        })
-    }))
+  handleLike = (fact, isLiked) => {
+    if (isLiked) {
+      const deleteID = fact.likes.find(like => like.user.id === this.state.user.id).id
+      API.destroyLike(deleteID)
+      return API.fetchFacts().then(facts => facts.reverse()).then(facts => this.setState({savedFacts: facts}))
+      // return this.setState({
+      //   savedFacts: 
+      //     this.state.savedFacts.map(mappedFact => {
+      //       if(fact.id === mappedFact.id) {
+      //         fact.get_likes--
+      //         return fact
+      //       }
+      //       return mappedFact
+      //     })
+      // })
+    }
+    API.postLike(fact, this.state.user.id)
+    return API.fetchFacts().then(facts => facts.reverse()).then(facts => this.setState({savedFacts: facts}))
+    // .then(like =>
+    //   this.setState({
+    //   savedFacts: 
+    //     this.state.savedFacts.map(mappedFact => {
+    //       if(fact.id === mappedFact.id) {
+    //         fact.get_likes = like.like.newlikes
+    //         return fact
+    //       }
+    //       return mappedFact
+    //     })
+    // }))
   }
 
   postComment = (comment, fact) => {
@@ -85,7 +102,7 @@ class App extends React.Component {
         { this.state.user ?
         <div>
         <strong> Welcome to Factpal {this.state.user.username} ! </strong>
-        <FactContainer newFacts={this.state.newFacts} savedFacts={this.state.savedFacts} newFact={this.fetchFact} postFact={this.postFact} likeFact={this.likeFact} postComment={this.postComment}/> 
+        <FactContainer currentUser={this.state.user} newFacts={this.state.newFacts} savedFacts={this.state.savedFacts} newFact={this.fetchFact} postFact={this.postFact} handleLike={this.handleLike} postComment={this.postComment}/> 
         </div>: 
         <div>
           <img 

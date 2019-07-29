@@ -67,6 +67,14 @@ const postLike = (fact, liker) => {
     }).then(response => response.json())
 }
 
+const destroyLike = (deleteID) => {
+    return fetch(`http://localhost:3000/api/v1/likes/${deleteID}`, {
+    method: 'DELETE',
+    headers: 
+        {'Authorization': localStorage.getItem('token')}
+    }).then(response => response.json())
+}
+
 
 const postFact = (fact, poster) => {
     return fetch(`http://localhost:3000/api/v1/facts`, {
@@ -100,5 +108,6 @@ export default {
     fetchFacts,
     postLike,
     postFact,
-    postComment
+    postComment,
+    destroyLike
 }

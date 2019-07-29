@@ -7,7 +7,7 @@ class FactContainer extends React.Component {
         return(
             <>
                 {this.props.newFacts.map(fact => <Fact key={fact.id} newFact={true} fact={fact} newFact={this.props.newFact} postFact={this.props.postFact} />)}
-                {this.props.savedFacts.map(fact => <Fact key={fact.id} newFact={false} fact={fact} likeFact={this.props.likeFact} postComment={this.props.postComment}/>)}
+                {this.props.savedFacts.map(fact => <Fact key={fact.id} currentUser={this.props.currentUser} newFact={false} fact={fact} handleLike={this.props.handleLike} postComment={this.props.postComment}/>)}
             </>
         )
     }
