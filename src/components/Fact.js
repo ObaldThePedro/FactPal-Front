@@ -23,9 +23,12 @@ class Fact extends React.Component  {
         this.closeModal()
     }
 
-    render(){
+    isLiked = () => {
         const currentUserID = this.props.currentUser.id
-        const isLiked = this.props.fact.likes.map(like => like.user.id).includes(currentUserID)
+        return this.props.fact.likes.map(like => like.user.id).includes(currentUserID)
+    }
+
+    render(){
         const {
             showModal
           } = this.state
@@ -41,9 +44,9 @@ class Fact extends React.Component  {
             </div>
                  : 
                  <div>
-                 <div className="ui labeled button" tabIndex="0" onClick={() => this.props.handleLike(this.props.fact, isLiked)}>
+                 <div className="ui labeled button" tabIndex="0" onClick={() => this.props.handleLike(this.props.fact, this.isLiked())}>
                  <div className="ui red button">
-                     <i className="heart icon" ></i> {isLiked ? "Unlike" : "Like"}
+                     <i className="heart icon" ></i> {this.isLiked() ? "Unlike" : "Like"}
                  </div>
                  <a className="ui basic red left pointing label">
                     {this.props.fact.get_likes}
