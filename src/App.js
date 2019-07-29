@@ -25,7 +25,7 @@ class App extends React.Component {
           // display some error
           // this.props.history.push('/login')
         } else {
-          this.setState({ user: data })
+          this.setState({ user: data.user })
           // this.props.history.push('/dashboard')
         }}
       )
@@ -51,7 +51,7 @@ class App extends React.Component {
   }
 
   saveFact = (fact) => {
-    fact.username = "Felix"
+    fact.username = this.state.user.email
     this.setState({savedFacts: [fact, ...this.state.savedFacts]})
     this.setState({newFacts: []})
   }
@@ -60,6 +60,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <Navbar user={this.state.user} logOut={this.logOut} fetchFact={this.fetchFact}/>
+        {this.state.user ? <strong> Welcome to Factpal {this.state.user.email} </strong> : true}
         { this.state.user ? 
         <FactContainer newFacts={this.state.newFacts} savedFacts={this.state.savedFacts} newFact={this.fetchFact} saveFact={this.saveFact} /> : 
         <div>

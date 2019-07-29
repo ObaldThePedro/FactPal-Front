@@ -13,14 +13,6 @@ const jsonify = res => {
 
 const handleServerError = response => console.error(response)
 
-
-// const constructHeaders = (moreHeaders = {}) => (
-//     {
-//         'Authorization': localStorage.getItem('token'),
-//         ...moreHeaders
-//     }
-// )
-
 const signUp = (user) => fetch(signupUrl, {
     method: 'POST',
     headers: {
