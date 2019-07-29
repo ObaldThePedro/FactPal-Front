@@ -51,11 +51,35 @@ const validateUser = () => {
         .catch(handleServerError)
 }
 
+const fetchFacts = () =>
+    fetch('http://localhost:3000/api/v1/facts', {
+    headers: {'Authorization': localStorage.getItem('token')}
+    }).then(response => response.json())
+
+const postLike = (fact, liker) => {
+    return fetch(`http://localhost:3000/api/v1/likes`, {
+    method: 'POST',
+    headers: 
+        {'Authorization': localStorage.getItem('token'),
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'},
+    body: JSON.stringify({fact_id: fact.id, user_id: liker})
+    }).then(response => response.json())
+}
+
+
+const saveFact = () => {
+
+}
+
 const clearToken = () => localStorage.removeItem('token')
 
 export default {
     signUp,
     logIn,
     validateUser,
-    clearToken
+    clearToken,
+    fetchFacts,
+    saveFact,
+    postLike
 }

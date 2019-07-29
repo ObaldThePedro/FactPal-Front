@@ -11,22 +11,21 @@ class App extends React.Component {
   state = {
     user: undefined,
     newFacts: [],
-    savedFacts: [{
-      username: "Felix",
-      text: "This is a fact"
-    }]
+    savedFacts: []
   }
 
   componentDidMount() {
     API.validateUser()
       .then(data => {
-        if (!data.user) {
-          console.error(data.message)
+        if (!data.user) {           
+          window.history.pushState({}, "new state", "login");
           // display some error
           // this.props.history.push('/login')
         } else {
           this.setState({ user: data.user })
+          window.history.pushState({}, "new state", "home");
           // this.props.history.push('/dashboard')
+          API.fetchFacts().then(facts => this.setState({savedFacts: facts}))
         }}
       )
   }
@@ -34,16 +33,19 @@ class App extends React.Component {
   signUp = user => {
     API.signUp(user)
       .then(user => this.setState({ user }))
+      window.history.pushState({}, "new state", "home");
   }
 
   logIn = user => {
     API.logIn(user)
       .then(user => this.setState({ user }))
+      window.history.pushState({}, "new state", "home");
   }
 
   logOut = () => {
     API.clearToken()
     this.setState({ user: undefined })
+    window.history.pushState({}, "new state", "login");
   }
 
   fetchFact = () => {
@@ -51,18 +53,34 @@ class App extends React.Component {
   }
 
   saveFact = (fact) => {
-    fact.username = this.state.user.email
+    fact.username = this.state.user.username
     this.setState({savedFacts: [fact, ...this.state.savedFacts]})
     this.setState({newFacts: []})
+    //API.saveFact(fact)
+  }
+
+  likeFact = (fact) => {
+    API.postLike(fact, this.state.user.id).then(this.setState({
+      savedFacts: 
+        this.state.savedFacts.map(mappedFact => {
+          if(fact.id === mappedFact.id) {
+            fact.get_likes++
+            return fact
+          }
+          return mappedFact
+        })
+    }))
   }
 
   render() {
     return (
       <div className="App">
         <Navbar user={this.state.user} logOut={this.logOut} fetchFact={this.fetchFact}/>
-        {this.state.user ? <strong> Welcome to Factpal {this.state.user.email} </strong> : true}
-        { this.state.user ? 
-        <FactContainer newFacts={this.state.newFacts} savedFacts={this.state.savedFacts} newFact={this.fetchFact} saveFact={this.saveFact} /> : 
+        { this.state.user ?
+        <div>
+        <strong> Welcome to Factpal {this.state.user.username} ! </strong>
+        <FactContainer newFacts={this.state.newFacts} savedFacts={this.state.savedFacts} newFact={this.fetchFact} saveFact={this.saveFact} likeFact={this.likeFact} /> 
+        </div>: 
         <div>
           <img 
           src={require('./images/fact.jpg')}
