@@ -5,6 +5,7 @@ import LoginPage from './components/LoginPage';
 import Navbar from './components/Navbar';
 import API from './adapters/API';
 import FactContainer from './containers/FactContainer';
+import { Modal, Button, Image, Header } from 'semantic-ui-react'
 
 class App extends React.Component {
 
@@ -24,8 +25,8 @@ class App extends React.Component {
         } else {
           this.setState({ user: data.user })
           window.history.pushState({}, "new state", "home");
-          // this.props.history.push('/dashboard')
-          API.fetchFacts().then(facts => this.setState({savedFacts: facts}))
+          // this.props.history.push('/dashboard')  
+         API.fetchFacts().then(facts => facts.reverse()).then(facts => this.setState({savedFacts: facts}))
         }}
       )
   }
@@ -35,7 +36,6 @@ class App extends React.Component {
       .then(user => this.setState({ user }))
       window.history.pushState({}, "new state", "home");
   }
-
   logIn = user => {
     API.logIn(user)
       .then(user => this.setState({ user }))
@@ -52,24 +52,30 @@ class App extends React.Component {
     fetch("http://numbersapi.com/random/trivia?json").then(resp => resp.json()).then(newFact => this.setState({newFacts: [newFact]}))
   }
 
-  saveFact = (fact) => {
-    fact.username = this.state.user.username
-    this.setState({savedFacts: [fact, ...this.state.savedFacts]})
-    this.setState({newFacts: []})
-    //API.saveFact(fact)
+  postFact = (fact) => {
+    API.postFact(fact, this.state.user.id).then(fact => {
+      this.setState({savedFacts: [fact.fact, ...this.state.savedFacts]})
+      this.setState({newFacts: []})
+    })
   }
-
+  
   likeFact = (fact) => {
-    API.postLike(fact, this.state.user.id).then(this.setState({
+    API.postLike(fact, this.state.user.id).then(like =>
+      this.setState({
       savedFacts: 
         this.state.savedFacts.map(mappedFact => {
           if(fact.id === mappedFact.id) {
-            fact.get_likes++
+            fact.get_likes = like.like.newlikes
             return fact
           }
           return mappedFact
         })
     }))
+  }
+
+  postComment = (comment, fact) => {
+    API.postComment(comment.comment, fact.id, this.state.user.id)
+    API.fetchFacts().then(facts => facts.reverse()).then(facts => this.setState({savedFacts: facts}))
   }
 
   render() {
@@ -79,7 +85,7 @@ class App extends React.Component {
         { this.state.user ?
         <div>
         <strong> Welcome to Factpal {this.state.user.username} ! </strong>
-        <FactContainer newFacts={this.state.newFacts} savedFacts={this.state.savedFacts} newFact={this.fetchFact} saveFact={this.saveFact} likeFact={this.likeFact} /> 
+        <FactContainer newFacts={this.state.newFacts} savedFacts={this.state.savedFacts} newFact={this.fetchFact} postFact={this.postFact} likeFact={this.likeFact} postComment={this.postComment}/> 
         </div>: 
         <div>
           <img 

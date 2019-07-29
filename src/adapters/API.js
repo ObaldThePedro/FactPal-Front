@@ -68,11 +68,29 @@ const postLike = (fact, liker) => {
 }
 
 
-const saveFact = () => {
-
+const postFact = (fact, poster) => {
+    return fetch(`http://localhost:3000/api/v1/facts`, {
+    method: 'POST',
+    headers: 
+        {'Authorization': localStorage.getItem('token'),
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'},
+    body: JSON.stringify({text: fact.text, user_id: poster})
+    }).then(response => response.json())
 }
 
 const clearToken = () => localStorage.removeItem('token')
+
+const postComment = (text, fact, poster) => {
+    return fetch(`http://localhost:3000/api/v1/comments`, {
+    method: 'POST',
+    headers: 
+        {'Authorization': localStorage.getItem('token'),
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'},
+    body: JSON.stringify({text: text, fact_id: fact, user_id: poster})
+    }).then(response => response.json())
+}
 
 export default {
     signUp,
@@ -80,6 +98,7 @@ export default {
     validateUser,
     clearToken,
     fetchFacts,
-    saveFact,
-    postLike
+    postLike,
+    postFact,
+    postComment
 }
