@@ -3,6 +3,11 @@ import UserForm from './UserForm'
 
 const LoginPage = ({ user, signUp, logIn, logOut }) => {
     return (
+        <>
+        <img 
+        src={require('../images/fact.jpg')}
+        style={{width: 600, height: 600, position: 'relative'}}
+        />
         <nav>
             {
                 <>
@@ -12,6 +17,7 @@ const LoginPage = ({ user, signUp, logIn, logOut }) => {
                 </>
             }
         </nav>
+        </>
     )
 }
 

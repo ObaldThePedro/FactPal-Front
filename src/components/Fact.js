@@ -32,6 +32,7 @@ class Fact extends React.Component  {
         const {
             showModal
           } = this.state
+          
     return (
         <>
         <div className="ui raised very padded text container segment">

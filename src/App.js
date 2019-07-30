@@ -100,15 +100,9 @@ class App extends React.Component {
       <div className="App">
         <Navbar user={this.state.user} logOut={this.logOut} fetchFact={this.fetchFact}/>
         { this.state.user ?
-        <div>
-        <strong> Welcome to Factpal {this.state.user.username} ! </strong>
         <FactContainer currentUser={this.state.user} newFacts={this.state.newFacts} savedFacts={this.state.savedFacts} newFact={this.fetchFact} postFact={this.postFact} handleLike={this.handleLike} postComment={this.postComment}/> 
-        </div>: 
+        : 
         <div>
-          <img 
-          src={require('./images/fact.jpg')}
-          style={{width: 600, height: 600, position: 'relative', top: this.props.top, left: this.props.left}}
-          />
           <LoginPage user={this.state.user} signUp={this.signUp} logIn={this.logIn} />
         </div>
         }
