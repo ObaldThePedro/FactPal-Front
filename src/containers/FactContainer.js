@@ -4,6 +4,7 @@ import Fact from '../components/Fact';
 class FactContainer extends React.Component {
     
     render(){
+        debugger
         return(
             <>
                 <strong> Welcome to Factpal {this.props.currentUser.username} ! </strong>

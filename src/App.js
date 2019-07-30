@@ -14,7 +14,7 @@ class App extends React.Component {
     savedFacts: []
   }
 
-  componentDidMount() {
+componentDidMount() {
     API.validateUser()
       .then(data => {
         if (!data.user) {
@@ -37,8 +37,8 @@ class App extends React.Component {
 
   logIn = user => {
     API.logIn(user)
-      .then(user => this.setState({ user })).then(user => this.displayFacts())
-      this.props.history.push('/home')
+      .then(user => this.setState({ user })).then(user => this.displayFacts()).then(this.props.history.push('/home'))
+      
   }
 
   logOut = () => {
@@ -97,16 +97,13 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        { this.state.user ?
-        <>
-        <Navbar user={this.state.user} logOut={this.logOut} fetchFact={this.fetchFact}/>
-        <FactContainer currentUser={this.state.user} newFacts={this.state.newFacts} savedFacts={this.state.savedFacts} newFact={this.fetchFact} postFact={this.postFact} handleLike={this.handleLike} postComment={this.postComment}/> 
-        </>
-        : 
+        <Route path={"/home"} render={props =>
         <div>
-        <LoginPage user={this.state.user} signUp={this.signUp} logIn={this.logIn} />
+          <Navbar user={this.state.user} logOut={this.logOut} fetchFact={this.fetchFact}/>
+          <FactContainer currentUser={this.state.user} newFacts={this.state.newFacts} savedFacts={this.state.savedFacts} newFact={this.fetchFact} postFact={this.postFact} handleLike={this.handleLike} postComment={this.postComment}/>
         </div>
-        }
+        }/>
+        <Route exact path={"/login"} component={props => <LoginPage user={this.state.user} signUp={this.signUp} logIn={this.logIn} />} />
       </div>
     );
   }
