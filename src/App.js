@@ -100,7 +100,7 @@ componentDidMount() {
         <Route path={"/home"} render={props =>
         <div>
           <Navbar user={this.state.user} logOut={this.logOut} fetchFact={this.fetchFact}/>
-          <FactContainer currentUser={this.state.user} newFacts={this.state.newFacts} savedFacts={this.state.savedFacts} newFact={this.fetchFact} postFact={this.postFact} handleLike={this.handleLike} postComment={this.postComment}/>
+          <FactContainer loading={!!this.state.user}currentUser={this.state.user} newFacts={this.state.newFacts} savedFacts={this.state.savedFacts} newFact={this.fetchFact} postFact={this.postFact} handleLike={this.handleLike} postComment={this.postComment}/>
         </div>
         }/>
         <Route exact path={"/login"} component={props => <LoginPage user={this.state.user} signUp={this.signUp} logIn={this.logIn} />} />
