@@ -1,11 +1,10 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import LoginPage from './components/LoginPage';
 import Navbar from './components/Navbar';
 import API from './adapters/API';
 import FactContainer from './containers/FactContainer';
-import { Modal, Button, Image, Header } from 'semantic-ui-react'
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 class App extends React.Component {
 
@@ -98,9 +97,11 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <Navbar user={this.state.user} logOut={this.logOut} fetchFact={this.fetchFact}/>
         { this.state.user ?
+        <>
+        <Navbar user={this.state.user} logOut={this.logOut} fetchFact={this.fetchFact}/>
         <FactContainer currentUser={this.state.user} newFacts={this.state.newFacts} savedFacts={this.state.savedFacts} newFact={this.fetchFact} postFact={this.postFact} handleLike={this.handleLike} postComment={this.postComment}/> 
+        </>
         : 
         <div>
           <LoginPage user={this.state.user} signUp={this.signUp} logIn={this.logIn} />
