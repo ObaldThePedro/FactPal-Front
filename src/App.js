@@ -17,34 +17,34 @@ class App extends React.Component {
   componentDidMount() {
     API.validateUser()
       .then(data => {
-        if (!data.user) {           
-          window.history.pushState({}, "new state", "login");
-          // display some error
-          // this.props.history.push('/login')
+        if (!data.user) {
+          this.props.history.push('/login')
         } else {
           this.setState({ user: data.user })
-          window.history.pushState({}, "new state", "home");
-          // this.props.history.push('/dashboard')  
-         API.fetchFacts().then(facts => facts.reverse()).then(facts => this.setState({savedFacts: facts}))
+          this.props.history.push('/home')
+          this.displayFacts()
         }}
       )
   }
 
+  displayFacts = () => API.fetchFacts().then(facts => facts.reverse()).then(reversedFacts => this.setState({savedFacts: reversedFacts}))
+
   signUp = user => {
     API.signUp(user)
-      .then(user => this.setState({ user }))
-      window.history.pushState({}, "new state", "home");
-  }
+      .then(user => this.setState({ user })).then(user => this.displayFacts())
+      this.props.history.push('/home')
+    }
+
   logIn = user => {
     API.logIn(user)
-      .then(user => this.setState({ user }))
-      window.history.pushState({}, "new state", "home");
+      .then(user => this.setState({ user })).then(user => this.displayFacts())
+      this.props.history.push('/home')
   }
 
   logOut = () => {
     API.clearToken()
     this.setState({ user: undefined })
-    window.history.pushState({}, "new state", "login");
+    this.props.history.push('/login')
   }
 
   fetchFact = () => {
@@ -62,7 +62,7 @@ class App extends React.Component {
     if (isLiked) {
       const deleteID = fact.likes.find(like => like.user.id === this.state.user.id).id
       API.destroyLike(deleteID)
-      return API.fetchFacts().then(facts => facts.reverse()).then(facts => this.setState({savedFacts: facts}))
+      return this.displayFacts()
       // return this.setState({
       //   savedFacts: 
       //     this.state.savedFacts.map(mappedFact => {
@@ -75,7 +75,7 @@ class App extends React.Component {
       // })
     }
     API.postLike(fact, this.state.user.id)
-    return API.fetchFacts().then(facts => facts.reverse()).then(facts => this.setState({savedFacts: facts}))
+    return this.displayFacts()
     // .then(like =>
     //   this.setState({
     //   savedFacts: 
@@ -104,7 +104,7 @@ class App extends React.Component {
         </>
         : 
         <div>
-          <LoginPage user={this.state.user} signUp={this.signUp} logIn={this.logIn} />
+        <LoginPage user={this.state.user} signUp={this.signUp} logIn={this.logIn} />
         </div>
         }
       </div>
