@@ -11,7 +11,8 @@ class App extends React.Component {
   state = {
     user: undefined,
     newFacts: [],
-    savedFacts: []
+    savedFacts: [],
+    sortLike: false
   }
 
 componentDidMount() {
@@ -61,8 +62,10 @@ componentDidMount() {
   handleLike = (fact, isLiked) => {
     if (isLiked) {
       const deleteID = fact.likes.find(like => like.user.id === this.state.user.id).id
-      API.destroyLike(deleteID)
-      return this.displayFacts()
+      
+      
+      
+      API.destroyLike(deleteID).then(message => this.displayFacts())
       // return this.setState({
       //   savedFacts: 
       //     this.state.savedFacts.map(mappedFact => {
@@ -73,9 +76,8 @@ componentDidMount() {
       //       return mappedFact
       //     })
       // })
-    }
-    API.postLike(fact, this.state.user.id)
-    return this.displayFacts()
+    } else {
+    API.postLike(fact, this.state.user.id).then(this.displayFacts)
     // .then(like =>
     //   this.setState({
     //   savedFacts: 
@@ -87,20 +89,35 @@ componentDidMount() {
     //       return mappedFact
     //     })
     // }))
-  }
+  }}
 
   postComment = (comment, fact) => {
     API.postComment(comment.comment, fact.id, this.state.user.id)
     API.fetchFacts().then(facts => facts.reverse()).then(facts => this.setState({savedFacts: facts}))
   }
+  
+  sortFacts = (factsArray) => {
+    if (!this.state.sortLike) return factsArray
+    return factsArray.slice().sort(function (factA, factB) {
+      return factB.get_likes - factA.get_likes
+    });
+    }
+  
+
+  toggleLikeSort = () => {
+    this.setState({
+      sortLike: !this.state.sortLike
+    })
+  }
 
   render() {
+    const facts = this.sortFacts(this.state.savedFacts)
     return (
       <div className="App">
         <Route path={"/home"} render={props =>
         <div>
-          <Navbar user={this.state.user} logOut={this.logOut} fetchFact={this.fetchFact}/>
-          <FactContainer loading={!!this.state.user}currentUser={this.state.user} newFacts={this.state.newFacts} savedFacts={this.state.savedFacts} newFact={this.fetchFact} postFact={this.postFact} handleLike={this.handleLike} postComment={this.postComment}/>
+          <Navbar user={this.state.user} logOut={this.logOut} fetchFact={this.fetchFact} toggleLike={this.toggleLikeSort} likeFilter={this.state.sortLike} />
+          <FactContainer loading={!!this.state.user}currentUser={this.state.user} newFacts={this.state.newFacts} savedFacts={facts} newFact={this.fetchFact} postFact={this.postFact} handleLike={this.handleLike} postComment={this.postComment}/>
         </div>
         }/>
         <Route exact path={"/login"} component={props => <LoginPage user={this.state.user} signUp={this.signUp} logIn={this.logIn} />} />

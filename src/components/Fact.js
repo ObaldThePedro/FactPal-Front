@@ -73,7 +73,7 @@ class Fact extends React.Component  {
                 <Modal trigger={<Button className="ui basic blue left pointing label"><a> {this.props.fact.get_comments} </a></Button>}>
                     <Modal.Header>Comments</Modal.Header>
                     <Modal.Content>
-                        {this.props.fact.comments.map(comment => 
+                        {this.props.fact.comments.map(comment =>
                         <div>
                         <h5> {comment.author}</h5>
                         <div> {comment.text} </div>
